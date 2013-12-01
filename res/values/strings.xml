@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">JamCamViewer</string>
+    <string name="refresh_camera">Refresh JamCam</string>
+    <string name="return_home">Return home</string>
 </resources>

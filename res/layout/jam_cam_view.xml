@@ -8,5 +8,25 @@
     <WebView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/webView" android:layout_gravity="center"/>
+            android:id="@+id/webView"
+            android:layout_gravity="center"/>
+    <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="20dip">
+        <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/refresh_camera"
+                android:id="@+id/refresh_camera_button"
+                android:onClick="onRefreshCameraPressed" />
+        <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/return_home"
+                android:id="@+id/return_home_button"
+                android:onClick="onReturnPressed"/>
+    </LinearLayout>
 </LinearLayout>

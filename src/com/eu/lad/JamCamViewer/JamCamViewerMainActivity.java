@@ -12,8 +12,10 @@ import java.util.Hashtable;
 
 public class JamCamViewerMainActivity extends Activity implements View.OnClickListener {
 
-    protected final String cameraBaseURL = "http://ichef.bbci.co.uk/travelnews/national/trafficcameras/highwaysagency/%s/serveimage";
+    protected final String cameraBaseURL = "http://www.trafficengland.com/trafficcamera.aspx?cameraUri=http://public.hanet.org.uk/cctvpublicaccess/html/%s.html";
     protected Hashtable<Integer, String> cameras;
+
+    protected Intent jamCamView;
 
     public final static String CAM_URL = "com.eu.lad.JamCamViewer.CAM_URL";
 
@@ -26,8 +28,21 @@ public class JamCamViewerMainActivity extends Activity implements View.OnClickLi
         setContentView(R.layout.main);
 
         cameras = new Hashtable<Integer, String>();
+        cameras.put(58299, "M40 J1");
+        cameras.put(58316, "M40 J1A");
         cameras.put(58350, "M40 J1A-J2");
         cameras.put(58368, "M40 J1A-J2 curve");
+        cameras.put(55020, "M25 J16 under M40");
+        cameras.put(54975, "M25 J16-J15");
+        cameras.put(54965, "M25 J16-J15");
+        cameras.put(52280, "M4 J4B");
+        cameras.put(52288, "M4 J4B");
+        cameras.put(52296, "M4 J4B-J5");
+        cameras.put(52306, "M4 J5");
+        cameras.put(52350, "M4 J5-J6");
+
+        // Initialise the Intent for the JamCamView activity
+        jamCamView = new Intent(this, JamCamView.class);
 
         LinearLayout buttonGrid = (LinearLayout) findViewById(R.id.buttonGrid);
 
@@ -54,33 +69,9 @@ public class JamCamViewerMainActivity extends Activity implements View.OnClickLi
         Integer camId = view.getId();
         String camURL = String.format(cameraBaseURL, camId);
 
-        Intent intent = new Intent(this, JamCamView.class);
-        intent.putExtra(CAM_URL, camURL);
+        jamCamView.putExtra(CAM_URL, camURL);
 
-        startActivity(intent);
+        startActivity(jamCamView);
 
     }
-
-
-/*
-    for (int i = 1; i <= 20; i++) {
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT);
-        Button btn = new Button(this);
-        btn.setId(i);
-        final int id_ = btn.getId();
-        btn.setText("button " + id_);
-        btn.setBackgroundColor(Color.rgb(70, 80, 90));
-        linear.addView(btn, params);
-        btn1 = ((Button) findViewById(id_));
-        btn1.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                Toast.makeText(view.getContext(),
-                        "Button clicked index = " + id_, Toast.LENGTH_SHORT)
-                        .show();
-            }
-        });
-    }
-    */
 }
