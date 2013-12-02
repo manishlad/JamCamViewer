@@ -5,10 +5,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.webkit.WebView;
+import android.widget.Button;
 
-public class JamCamView extends Activity {
+public class JamCamView extends Activity implements View.OnClickListener {
 
-    WebView webView;
+    protected WebView webView;
+    protected Button refreshCameraButton;
+    protected Button returnHomeButton;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -17,6 +20,12 @@ public class JamCamView extends Activity {
         webView = (WebView) findViewById(R.id.webView);
         // webView.setWebViewClient(new WebViewClient());
         webView.getSettings().setJavaScriptEnabled(true);
+
+        refreshCameraButton = (Button) findViewById(R.id.refresh_camera_button);
+        refreshCameraButton.setOnClickListener(this);
+
+        returnHomeButton = (Button) findViewById(R.id.return_home_button);
+        returnHomeButton.setOnClickListener(this);
     }
 
     public void onResume() {
@@ -24,6 +33,15 @@ public class JamCamView extends Activity {
         updateWebView();
     }
 
+    public void onClick(View view) {
+        if(view == refreshCameraButton) {
+            webView.reload();
+        }
+        else if (view == returnHomeButton) {
+            // super.onPause();
+            finish();
+        }
+    }
 
     private void updateWebView() {
         Intent intent = getIntent();
@@ -33,12 +51,4 @@ public class JamCamView extends Activity {
         webView.refreshDrawableState();
     }
 
-    public void onRefreshCameraPressed(View view) {
-        webView.reload();
-    }
-
-    public void onReturnPressed(View view) {
-        // super.onPause();
-        finish();
-    }
 }

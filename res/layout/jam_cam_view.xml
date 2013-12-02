@@ -1,32 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <WebView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/webView"
-            android:layout_gravity="center"/>
     <LinearLayout
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:padding="20dip">
-        <Button
+            android:gravity="center">
+
+        <WebView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/refresh_camera"
-                android:id="@+id/refresh_camera_button"
-                android:onClick="onRefreshCameraPressed" />
-        <Button
-                android:layout_width="wrap_content"
+                android:id="@+id/webView"
+                android:layout_gravity="center"/>
+        <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/return_home"
-                android:id="@+id/return_home_button"
-                android:onClick="onReturnPressed"/>
+                android:gravity="center"
+                android:padding="10dip">
+            <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/refresh_camera"
+                    android:id="@+id/refresh_camera_button" />
+            <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/return_home"
+                    android:id="@+id/return_home_button" />
+        </LinearLayout>
     </LinearLayout>
-</LinearLayout>
+</ScrollView>
