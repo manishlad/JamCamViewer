@@ -28,6 +28,8 @@ public class JamCamViewerMainActivity extends Activity implements View.OnClickLi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
+        cameras = new Vector<Pair<Integer, String>>();
+
         seedBaseData();
 
         // Initialise the Intent for the JamCamView activity
@@ -63,19 +65,26 @@ public class JamCamViewerMainActivity extends Activity implements View.OnClickLi
 
     }
 
-    private void seedBaseData() {
-        cameras = new Vector<Pair<Integer, String>>();
-        cameras.add(new Pair<Integer, String>(58299, "M40 J1"));
-        cameras.add(new Pair<Integer, String>(58316, "M40 J1A"));
-        cameras.add(new Pair<Integer, String>(58350, "M40 J1A-J2"));
-        cameras.add(new Pair<Integer, String>(58368, "M40 J1A-J2 curve"));
-        cameras.add(new Pair<Integer, String>(55020, "M25 J16 under M40"));
-        cameras.add(new Pair<Integer, String>(54975, "M25 J16-J15"));
-        cameras.add(new Pair<Integer, String>(54965, "M25 J16-J15"));
-        cameras.add(new Pair<Integer, String>(52280, "M4 J4B"));
-        cameras.add(new Pair<Integer, String>(52288, "M4 J4B"));
-        cameras.add(new Pair<Integer, String>(52296, "M4 J4B-J5"));
-        cameras.add(new Pair<Integer, String>(52306, "M4 J5"));
-        cameras.add(new Pair<Integer, String>(52350, "M4 J5-J6"));
+    private void addCamera(int cameraId, String cameraDescription) {
+        Pair<Integer, String> camera = new Pair<Integer, String>(cameraId, cameraDescription);
+        cameras.add(camera);
     }
+
+    private void seedBaseData() {
+        addCamera(58299, "M40 J1");
+        addCamera(58316, "M40 J1A");
+        addCamera(58350, "M40 J1A-J2");
+        addCamera(58368, "M40 J1A-J2 curve");
+        addCamera(55020, "M25 J16 under M40");
+        addCamera(54975, "M25 J16-J15");
+        addCamera(54965, "M25 J16-J15");
+        addCamera(52280, "M4 J4B");
+        addCamera(52288, "M4 J4B");
+        addCamera(52296, "M4 J4B-J5");
+        addCamera(52306, "M4 J5");
+        addCamera(52350, "M4 J5-J6");
+
+    }
+
+
 }
