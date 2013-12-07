@@ -34,6 +34,11 @@ public class JamCamInventory {
         seedBaseData();
     }
 
+    public void addCamera(int cameraId, String cameraDescription) {
+        Pair<Integer, String> camera = new Pair<Integer, String>(cameraId, cameraDescription);
+        cameras.add(camera);
+    }
+
     public Vector<Pair<Integer, String>> getAll() {
         return cameras;
     }
@@ -53,11 +58,6 @@ public class JamCamInventory {
                 cam = camera;
         }
         return cam;
-    }
-
-    public void addCamera(int cameraId, String cameraDescription) {
-        Pair<Integer, String> camera = new Pair<Integer, String>(cameraId, cameraDescription);
-        cameras.add(camera);
     }
 
     private void seedBaseData() {
