@@ -25,6 +25,8 @@ import java.util.Vector;
 
 public class JamCamInventory {
 
+    protected final String cameraBaseURL = "http://www.trafficengland.com/trafficcamera.aspx?cameraUri=http://public.hanet.org.uk/cctvpublicaccess/html/%s.html";
+
     private Vector<Pair<Integer, String>> cameras;
 
     public JamCamInventory() {
@@ -34,6 +36,23 @@ public class JamCamInventory {
 
     public Vector<Pair<Integer, String>> getAll() {
         return cameras;
+    }
+
+    public String getCameraURL(int camId) {
+        String url = null;
+        if(getCamera(camId) != null) {
+            url = String.format(cameraBaseURL, camId);
+        }
+        return url;
+    }
+
+    private Pair<Integer, String> getCamera(int camId) {
+        Pair<Integer, String> cam = null;
+        for (Pair<Integer, String> camera : cameras) {
+            if(camera.first == camId)
+                cam = camera;
+        }
+        return cam;
     }
 
     public void addCamera(int cameraId, String cameraDescription) {

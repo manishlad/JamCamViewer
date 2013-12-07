@@ -32,7 +32,6 @@ public class JamCamViewerMainActivity extends Activity implements View.OnClickLi
     public final static String CAM_URL = "com.eu.lad.JamCamViewer.CAM_URL";
     public final static int ADD_NEW_CAMERA_REQUEST = 1;
 
-    protected final String cameraBaseURL = "http://www.trafficengland.com/trafficcamera.aspx?cameraUri=http://public.hanet.org.uk/cctvpublicaccess/html/%s.html";
     protected Button addNewCamera;
     protected Intent jamCamView;
 
@@ -67,9 +66,7 @@ public class JamCamViewerMainActivity extends Activity implements View.OnClickLi
                 Bundle bundle = resultData.getExtras();
 
                 int camId = bundle.getInt(AddCameraDialog.CAMERA_ID);
-                System.out.println(camId);
                 String camDescription = bundle.getString(AddCameraDialog.CAMERA_DESCRIPTION);
-                System.out.println(camDescription);
 
                 inventory.addCamera(camId, camDescription);
 
@@ -86,10 +83,7 @@ public class JamCamViewerMainActivity extends Activity implements View.OnClickLi
         }
         else {
             Integer camId = view.getId();
-            String camURL = String.format(cameraBaseURL, camId);
-
-            jamCamView.putExtra(CAM_URL, camURL);
-
+            jamCamView.putExtra(CAM_URL, this.inventory.getCameraURL(camId));
             startActivity(jamCamView);
         }
     }
