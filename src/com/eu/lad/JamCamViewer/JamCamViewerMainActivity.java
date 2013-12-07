@@ -27,8 +27,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
-import java.util.Vector;
-
 public class JamCamViewerMainActivity extends Activity implements View.OnClickListener {
 
     public final static String CAM_URL = "com.eu.lad.JamCamViewer.CAM_URL";
@@ -38,7 +36,7 @@ public class JamCamViewerMainActivity extends Activity implements View.OnClickLi
     protected Button addNewCamera;
     protected Intent jamCamView;
 
-    private Vector<Pair<Integer, String>> cameras;
+    private JamCamInventory inventory;
 
 
     /**
@@ -49,9 +47,7 @@ public class JamCamViewerMainActivity extends Activity implements View.OnClickLi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
-        cameras = new Vector<Pair<Integer, String>>();
-
-        seedBaseData();
+        inventory = new JamCamInventory();
 
         // Initialise the Intent for the JamCamView activity
         jamCamView = new Intent(this, JamCamView.class);
@@ -75,7 +71,7 @@ public class JamCamViewerMainActivity extends Activity implements View.OnClickLi
                 String camDescription = bundle.getString(AddCameraDialog.CAMERA_DESCRIPTION);
                 System.out.println(camDescription);
 
-                addCamera(camId, camDescription);
+                inventory.addCamera(camId, camDescription);
 
                 renderLayout();
             }
@@ -102,7 +98,7 @@ public class JamCamViewerMainActivity extends Activity implements View.OnClickLi
         LinearLayout buttonGrid = (LinearLayout) findViewById(R.id.buttonGrid);
         buttonGrid.removeAllViews();
 
-        for (Pair<Integer, String> camera : cameras) {
+        for (Pair<Integer, String> camera : inventory.getAll()) {
             Integer camId = camera.first;
             String location = camera.second;
 
@@ -118,27 +114,6 @@ public class JamCamViewerMainActivity extends Activity implements View.OnClickLi
 
             btn.setOnClickListener(this);
         }
-    }
-
-    private void addCamera(int cameraId, String cameraDescription) {
-        Pair<Integer, String> camera = new Pair<Integer, String>(cameraId, cameraDescription);
-        cameras.add(camera);
-    }
-
-    private void seedBaseData() {
-        addCamera(58299, "M40 J1");
-        addCamera(58316, "M40 J1A");
-        addCamera(58350, "M40 J1A-J2");
-        addCamera(58368, "M40 J1A-J2 curve");
-        addCamera(55020, "M25 J16 under M40");
-        addCamera(54975, "M25 J16-J15");
-        addCamera(54965, "M25 J16-J15");
-        addCamera(52280, "M4 J4B");
-        addCamera(52288, "M4 J4B");
-        addCamera(52296, "M4 J4B-J5");
-        addCamera(52306, "M4 J5");
-        addCamera(52350, "M4 J5-J6");
-
     }
 
 }

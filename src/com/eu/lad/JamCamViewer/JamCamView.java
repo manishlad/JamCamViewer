@@ -51,6 +51,7 @@ public class JamCamView extends Activity implements View.OnClickListener {
         returnHomeButton.setOnClickListener(this);
     }
 
+    @Override
     public void onResume() {
         super.onResume();
         updateWebView();
