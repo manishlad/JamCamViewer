@@ -32,8 +32,10 @@ import java.util.Vector;
 public class JamCamViewerMainActivity extends Activity implements View.OnClickListener {
 
     public final static String CAM_URL = "com.eu.lad.JamCamViewer.CAM_URL";
+    public final static int ADD_NEW_CAMERA_REQUEST = 1;
 
     protected final String cameraBaseURL = "http://www.trafficengland.com/trafficcamera.aspx?cameraUri=http://public.hanet.org.uk/cctvpublicaccess/html/%s.html";
+    protected Button addNewCamera;
     protected Intent jamCamView;
 
     private Vector<Pair<Integer, String>> cameras;
@@ -54,7 +56,51 @@ public class JamCamViewerMainActivity extends Activity implements View.OnClickLi
         // Initialise the Intent for the JamCamView activity
         jamCamView = new Intent(this, JamCamView.class);
 
+        addNewCamera = (Button) findViewById(R.id.add_new_camera);
+        addNewCamera.setOnClickListener(this);
+
+        renderLayout();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent resultData) {
+        super.onActivityResult(requestCode, resultCode, resultData);
+
+        if(requestCode == ADD_NEW_CAMERA_REQUEST) {
+            if(resultCode == RESULT_OK) {
+                Bundle bundle = resultData.getExtras();
+
+                int camId = bundle.getInt(AddCameraDialog.CAMERA_ID);
+                System.out.println(camId);
+                String camDescription = bundle.getString(AddCameraDialog.CAMERA_DESCRIPTION);
+                System.out.println(camDescription);
+
+                addCamera(camId, camDescription);
+
+                renderLayout();
+            }
+        }
+
+    }
+
+    public void onClick(View view) {
+        if(view == addNewCamera) {
+            Intent addCamera = new Intent(this, AddCameraDialog.class);
+            startActivityForResult(addCamera, ADD_NEW_CAMERA_REQUEST);
+        }
+        else {
+            Integer camId = view.getId();
+            String camURL = String.format(cameraBaseURL, camId);
+
+            jamCamView.putExtra(CAM_URL, camURL);
+
+            startActivity(jamCamView);
+        }
+    }
+
+    private void renderLayout() {
         LinearLayout buttonGrid = (LinearLayout) findViewById(R.id.buttonGrid);
+        buttonGrid.removeAllViews();
 
         for (Pair<Integer, String> camera : cameras) {
             Integer camId = camera.first;
@@ -72,16 +118,6 @@ public class JamCamViewerMainActivity extends Activity implements View.OnClickLi
 
             btn.setOnClickListener(this);
         }
-    }
-
-    public void onClick(View view) {
-        Integer camId = view.getId();
-        String camURL = String.format(cameraBaseURL, camId);
-
-        jamCamView.putExtra(CAM_URL, camURL);
-
-        startActivity(jamCamView);
-
     }
 
     private void addCamera(int cameraId, String cameraDescription) {
@@ -104,6 +140,5 @@ public class JamCamViewerMainActivity extends Activity implements View.OnClickLi
         addCamera(52350, "M4 J5-J6");
 
     }
-
 
 }

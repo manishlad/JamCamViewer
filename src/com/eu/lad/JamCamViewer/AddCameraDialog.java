@@ -23,14 +23,16 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.webkit.WebView;
 import android.widget.Button;
+import android.widget.EditText;
 
-public class JamCamView extends Activity implements View.OnClickListener {
+public class AddCameraDialog extends Activity implements View.OnClickListener {
 
-    protected WebView webView;
-    protected Button refreshCameraButton;
-    protected Button returnHomeButton;
+    public final static String CAMERA_ID = "com.eu.lad.JamCamViewer.CAMERA_ID";
+    public final static String CAMERA_DESCRIPTION = "com.eu.lad.JamCamViewer.CAMERA_DESCRIPTION";
+
+    protected Button okButton;
+    protected Button cancelButton;
 
     /**
      * Called when the activity is first created.
@@ -38,39 +40,34 @@ public class JamCamView extends Activity implements View.OnClickListener {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.jam_cam_view);
+        setContentView(R.layout.add_camera_dialog);
 
-        webView = (WebView) findViewById(R.id.webView);
-        // webView.setWebViewClient(new WebViewClient());
-        webView.getSettings().setJavaScriptEnabled(true);
+        okButton = (Button) findViewById(R.id.add_camera_ok_button);
+        okButton.setOnClickListener(this);
 
-        refreshCameraButton = (Button) findViewById(R.id.refresh_camera_button);
-        refreshCameraButton.setOnClickListener(this);
+        cancelButton = (Button) findViewById(R.id.add_camera_cancel_button);
+        cancelButton.setOnClickListener(this);
 
-        returnHomeButton = (Button) findViewById(R.id.return_home_button);
-        returnHomeButton.setOnClickListener(this);
-    }
-
-    public void onResume() {
-        super.onResume();
-        updateWebView();
     }
 
     public void onClick(View view) {
-        if(view == refreshCameraButton) {
-            webView.reload();
+        Intent intent = getIntent();
+
+        if(view==okButton) {
+            EditText cam_id = (EditText) findViewById(R.id.camera_id);
+            EditText cam_description = (EditText) findViewById(R.id.camera_description);
+
+            intent.putExtra(CAMERA_ID, new Integer(cam_id.getText().toString()));
+            intent.putExtra(CAMERA_DESCRIPTION, cam_description.getText().toString());
+
+            this.setResult(RESULT_OK, intent);
+            finish();
         }
-        else if (view == returnHomeButton) {
+        else if(view==cancelButton) {
+            this.setResult(RESULT_CANCELED, intent);
             finish();
         }
     }
 
-    private void updateWebView() {
-        Intent intent = getIntent();
-        String camURL = intent.getStringExtra(JamCamViewerMainActivity.CAM_URL);
-
-        webView.loadUrl(camURL);
-        webView.refreshDrawableState();
-    }
-
 }
+
