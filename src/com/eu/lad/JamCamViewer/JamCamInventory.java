@@ -21,16 +21,16 @@ package com.eu.lad.JamCamViewer;
 
 import android.util.Pair;
 
-import java.util.Vector;
+import java.util.LinkedList;
 
 public class JamCamInventory {
 
     protected final String cameraBaseURL = "http://www.trafficengland.com/trafficcamera.aspx?cameraUri=http://public.hanet.org.uk/cctvpublicaccess/html/%s.html";
 
-    private Vector<Pair<Integer, String>> cameras;
+    private LinkedList<Pair<Integer, String>> cameras;
 
     public JamCamInventory() {
-        cameras = new Vector<Pair<Integer, String>>();
+        cameras = new LinkedList<Pair<Integer, String>>();
         seedBaseData();
     }
 
@@ -39,7 +39,7 @@ public class JamCamInventory {
         cameras.add(camera);
     }
 
-    public Vector<Pair<Integer, String>> getAll() {
+    public LinkedList<Pair<Integer, String>> getAll() {
         return cameras;
     }
 
