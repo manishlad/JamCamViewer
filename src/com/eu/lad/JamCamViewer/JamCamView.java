@@ -19,36 +19,34 @@
 
 package com.eu.lad.JamCamViewer;
 
-import android.app.Activity;
+import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.widget.Button;
 
-public class JamCamView extends Activity implements View.OnClickListener {
+public class JamCamView extends Fragment implements View.OnClickListener {
 
     protected WebView webView;
     protected Button refreshCameraButton;
-    protected Button returnHomeButton;
 
-    /**
-     * Called when the activity is first created.
-     */
+
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.jam_cam_view);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
+        View view = inflater.inflate(R.layout.jam_cam_view, container, false);
 
-        webView = (WebView) findViewById(R.id.webView);
+        webView = (WebView) view.findViewById(R.id.webView);
         // webView.setWebViewClient(new WebViewClient());
         webView.getSettings().setJavaScriptEnabled(true);
 
-        refreshCameraButton = (Button) findViewById(R.id.refresh_camera_button);
+        refreshCameraButton = (Button) view.findViewById(R.id.refresh_camera_button);
         refreshCameraButton.setOnClickListener(this);
 
-        returnHomeButton = (Button) findViewById(R.id.return_home_button);
-        returnHomeButton.setOnClickListener(this);
+        return view;
     }
 
     @Override
@@ -61,13 +59,10 @@ public class JamCamView extends Activity implements View.OnClickListener {
         if(view == refreshCameraButton) {
             webView.reload();
         }
-        else if (view == returnHomeButton) {
-            finish();
-        }
     }
 
     private void updateWebView() {
-        Intent intent = getIntent();
+        Intent intent = getActivity().getIntent();
         String camURL = intent.getStringExtra(JamCamViewerMainActivity.CAM_URL);
 
         webView.loadUrl(camURL);

@@ -27,11 +27,6 @@
                     android:layout_height="wrap_content"
                     android:text="@string/refresh_camera"
                     android:id="@+id/refresh_camera_button" />
-            <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/return_home"
-                    android:id="@+id/return_home_button" />
         </LinearLayout>
     </LinearLayout>
 </ScrollView>

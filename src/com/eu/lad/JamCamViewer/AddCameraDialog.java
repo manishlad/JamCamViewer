@@ -20,53 +20,69 @@
 package com.eu.lad.JamCamViewer;
 
 import android.app.Activity;
+import android.app.DialogFragment;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
-public class AddCameraDialog extends Activity implements View.OnClickListener {
+public class AddCameraDialog extends DialogFragment implements View.OnClickListener {
 
     public final static String CAMERA_ID = "com.eu.lad.JamCamViewer.CAMERA_ID";
     public final static String CAMERA_DESCRIPTION = "com.eu.lad.JamCamViewer.CAMERA_DESCRIPTION";
 
+    protected View dialogView;
     protected Button okButton;
     protected Button cancelButton;
 
-    /**
-     * Called when the activity is first created.
-     */
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.add_camera_dialog);
+        dialogView = inflater.inflate(R.layout.add_camera_dialog, container, false);
 
-        okButton = (Button) findViewById(R.id.add_camera_ok_button);
+        getDialog().setTitle(R.string.add_new_camera);
+
+        okButton = (Button) dialogView.findViewById(R.id.add_camera_ok_button);
         okButton.setOnClickListener(this);
 
-        cancelButton = (Button) findViewById(R.id.add_camera_cancel_button);
+        cancelButton = (Button) dialogView.findViewById(R.id.add_camera_cancel_button);
         cancelButton.setOnClickListener(this);
 
+        return dialogView;
     }
 
     public void onClick(View view) {
-        Intent intent = getIntent();
+        Intent intent = getActivity().getIntent();
+        int resultCode = Activity.RESULT_CANCELED;
 
         if(view==okButton) {
-            EditText cam_id = (EditText) findViewById(R.id.camera_id);
-            EditText cam_description = (EditText) findViewById(R.id.camera_description);
+            EditText camera_id = (EditText) dialogView.findViewById(R.id.camera_id);
+            EditText camera_description = (EditText) dialogView.findViewById(R.id.camera_description);
 
-            intent.putExtra(CAMERA_ID, new Integer(cam_id.getText().toString()));
-            intent.putExtra(CAMERA_DESCRIPTION, cam_description.getText().toString());
+            String cam_id = camera_id.getText().toString();
+            String cam_desc = camera_description.getText().toString();
 
-            this.setResult(RESULT_OK, intent);
-            finish();
+            if ((cam_id != null) && !cam_id.isEmpty() &&
+                    (cam_desc != null) && !cam_desc.isEmpty()) {
+                intent.putExtra(CAMERA_ID, Integer.parseInt(cam_id));
+                intent.putExtra(CAMERA_DESCRIPTION, cam_desc);
+            }
+            else {
+                Toast.makeText(getActivity(), "Invalid data", Toast.LENGTH_SHORT).show();
+            }
+
+            resultCode = Activity.RESULT_OK;
         }
         else if(view==cancelButton) {
-            this.setResult(RESULT_CANCELED, intent);
-            finish();
+            resultCode = Activity.RESULT_CANCELED;
         }
+
+        getTargetFragment().onActivityResult(getTargetRequestCode(), resultCode, null);
+        dismiss();
     }
 
 }

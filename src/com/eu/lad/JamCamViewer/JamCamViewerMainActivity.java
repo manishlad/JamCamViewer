@@ -20,20 +20,14 @@
 package com.eu.lad.JamCamViewer;
 
 import android.app.Activity;
-import android.content.Intent;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
-import android.util.Pair;
-import android.view.View;
-import android.widget.Button;
-import android.widget.LinearLayout;
 
-public class JamCamViewerMainActivity extends Activity implements View.OnClickListener {
+public class JamCamViewerMainActivity extends Activity
+    implements JamCamViewerMainFragment.OnCameraSelectedListener {
 
     public final static String CAM_URL = "com.eu.lad.JamCamViewer.CAM_URL";
     public final static int ADD_NEW_CAMERA_REQUEST = 1;
-
-    protected Button addNewCamera;
-    protected Intent jamCamView;
 
     private JamCamInventory inventory;
 
@@ -46,68 +40,50 @@ public class JamCamViewerMainActivity extends Activity implements View.OnClickLi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
+        // Initialise the camera inventory
         inventory = new JamCamInventory();
 
-        // Initialise the Intent for the JamCamView activity
-        jamCamView = new Intent(this, JamCamView.class);
+        // Check that the activity is using the layout version with
+        // the main_fragment_container FrameLayout
+        if (findViewById(R.id.main_fragment_container) != null) {
 
-        addNewCamera = (Button) findViewById(R.id.add_new_camera);
-        addNewCamera.setOnClickListener(this);
-
-        renderLayout();
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent resultData) {
-        super.onActivityResult(requestCode, resultCode, resultData);
-
-        if(requestCode == ADD_NEW_CAMERA_REQUEST) {
-            if(resultCode == RESULT_OK) {
-                Bundle bundle = resultData.getExtras();
-
-                int camId = bundle.getInt(AddCameraDialog.CAMERA_ID);
-                String camDescription = bundle.getString(AddCameraDialog.CAMERA_DESCRIPTION);
-
-                inventory.addCamera(camId, camDescription);
-
-                renderLayout();
+            // However, if we're being restored from a previous state,
+            // then we don't need to do anything and should return or else
+            // we could end up with overlapping fragments.
+            if (savedInstanceState != null) {
+                return;
             }
+
+            // Create a new Fragment to be placed in the activity layout
+            JamCamViewerMainFragment firstFragment = new JamCamViewerMainFragment();
+
+            // In case this activity was started with special instructions from an
+            // Intent, pass the Intent's extras to the fragment as arguments
+            firstFragment.setArguments(getIntent().getExtras());
+
+            // Add the fragment to the 'fragment_container' FrameLayout
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            transaction.add(R.id.main_fragment_container, firstFragment);
+            transaction.commit();
         }
 
     }
 
-    public void onClick(View view) {
-        if(view == addNewCamera) {
-            Intent addCamera = new Intent(this, AddCameraDialog.class);
-            startActivityForResult(addCamera, ADD_NEW_CAMERA_REQUEST);
-        }
-        else {
-            Integer camId = view.getId();
-            jamCamView.putExtra(CAM_URL, this.inventory.getCameraURL(camId));
-            startActivity(jamCamView);
-        }
+    public void cameraSelected(int camera) {
+        JamCamView jamCamViewFragment = new JamCamView();
+        getIntent().putExtra(CAM_URL, inventory.getCameraURL(camera));
+        jamCamViewFragment.setArguments(getIntent().getExtras());
+
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+
+        transaction.replace(R.id.main_fragment_container, jamCamViewFragment);
+        transaction.addToBackStack(null);
+
+        transaction.commit();
     }
 
-    private void renderLayout() {
-        LinearLayout buttonGrid = (LinearLayout) findViewById(R.id.buttonGrid);
-        buttonGrid.removeAllViews();
-
-        for (Pair<Integer, String> camera : inventory.getAll()) {
-            Integer camId = camera.first;
-            String location = camera.second;
-
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT);
-
-            Button btn = new Button(this);
-            btn.setId(camId);
-            btn.setText(location);
-
-            buttonGrid.addView(btn, params);
-
-            btn.setOnClickListener(this);
-        }
+    public JamCamInventory getInventory() {
+        return inventory;
     }
 
 }
