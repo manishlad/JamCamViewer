@@ -41,7 +41,7 @@ public class JamCamViewerMainActivity extends Activity
         setContentView(R.layout.main);
 
         // Initialise the camera inventory
-        inventory = new JamCamInventory();
+        inventory = new JamCamInventory(this);
 
         // Check that the activity is using the layout version with
         // the main_fragment_container FrameLayout

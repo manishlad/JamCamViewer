@@ -19,24 +19,39 @@
 
 package com.eu.lad.JamCamViewer;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Pair;
 
 import java.util.LinkedList;
+import java.util.Map;
 
 public class JamCamInventory {
 
     protected final String cameraBaseURL = "http://www.trafficengland.com/trafficcamera.aspx?cameraUri=http://public.hanet.org.uk/cctvpublicaccess/html/%s.html";
+    protected Activity parentActivity;
 
     private LinkedList<Pair<Integer, String>> cameras;
 
-    public JamCamInventory() {
+    public JamCamInventory(Context context) {
+        parentActivity = (Activity) context;
+
         cameras = new LinkedList<Pair<Integer, String>>();
+
+        readData();
+
         seedBaseData();
     }
 
     public void addCamera(int cameraId, String cameraDescription) {
         Pair<Integer, String> camera = new Pair<Integer, String>(cameraId, cameraDescription);
         cameras.add(camera);
+
+        SharedPreferences sharedPref = parentActivity.getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString(String.valueOf(cameraId), cameraDescription);
+        editor.commit();
     }
 
     public LinkedList<Pair<Integer, String>> getAll() {
@@ -60,19 +75,29 @@ public class JamCamInventory {
         return cam;
     }
 
+    private void readData() {
+        SharedPreferences sharedPref = parentActivity.getPreferences(Context.MODE_PRIVATE);
+
+        for (Map.Entry<String, ?> entry : sharedPref.getAll().entrySet()) {
+            addCamera(Integer.parseInt(entry.getKey()), entry.getValue().toString());
+        }
+    }
+
     private void seedBaseData() {
-        addCamera(58299, "M40 J1");
-        addCamera(58316, "M40 J1A");
-        addCamera(58350, "M40 J1A-J2");
-        addCamera(58368, "M40 J1A-J2 curve");
-        addCamera(55020, "M25 J16 under M40");
-        addCamera(54975, "M25 J16-J15");
-        addCamera(54965, "M25 J16-J15");
-        addCamera(52280, "M4 J4B");
-        addCamera(52288, "M4 J4B");
-        addCamera(52296, "M4 J4B-J5");
-        addCamera(52306, "M4 J5");
-        addCamera(52350, "M4 J5-J6");
+        if (cameras.isEmpty()) {
+            addCamera(58299, "M40 J1");
+            addCamera(58316, "M40 J1A");
+            addCamera(58350, "M40 J1A-J2");
+            addCamera(58368, "M40 J1A-J2 curve");
+            addCamera(55020, "M25 J16 under M40");
+            addCamera(54975, "M25 J16-J15");
+            addCamera(54965, "M25 J16-J15");
+            addCamera(52280, "M4 J4B");
+            addCamera(52288, "M4 J4B");
+            addCamera(52296, "M4 J4B-J5");
+            addCamera(52306, "M4 J5");
+            addCamera(52350, "M4 J5-J6");
+        }
     }
 
 }
