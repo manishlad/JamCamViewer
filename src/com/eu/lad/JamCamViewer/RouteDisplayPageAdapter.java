@@ -19,7 +19,6 @@
 
 package com.eu.lad.JamCamViewer;
 
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -37,12 +36,14 @@ public class RouteDisplayPageAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public Fragment getItem(int i) {
-        Route r = mRouteInventory.get(i);
+/*        Route r = mRouteInventory.get(i);
         Fragment fragment = new RouteDisplayFragment();
         Bundle args = new Bundle();
         args.putSerializable(RouteDisplayFragment.ROUTEKEY, r);
         fragment.setArguments(args);
         return fragment;
+*/
+        return null;
     }
 
     @Override

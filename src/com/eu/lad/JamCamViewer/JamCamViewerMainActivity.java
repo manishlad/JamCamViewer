@@ -20,10 +20,10 @@
 package com.eu.lad.JamCamViewer;
 
 import android.app.ActionBar;
-import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.view.ViewPager;
+import android.support.v4.app.FragmentTransaction;
+import android.widget.FrameLayout;
 
 import java.util.LinkedList;
 
@@ -34,7 +34,8 @@ public class JamCamViewerMainActivity extends FragmentActivity {
     public final static int ADD_NEW_CAMERA_REQUEST = 1;
 
     protected RouteDisplayPageAdapter mRouteDisplayPageAdapter;
-    protected ViewPager mViewPager;
+    //protected ViewPager mViewPager;
+    protected FrameLayout mFrameLayout;
 
 //    private JamCamInventory inventory;
 
@@ -80,9 +81,19 @@ public class JamCamViewerMainActivity extends FragmentActivity {
         routeInventory = new LinkedList<Route>();
         seedBaseData();
 
-        mRouteDisplayPageAdapter = new RouteDisplayPageAdapter(getSupportFragmentManager(), routeInventory);
-        mViewPager = (ViewPager) findViewById(R.id.route_pager);
-        mViewPager.setAdapter(mRouteDisplayPageAdapter);
+//        mRouteDisplayPageAdapter = new RouteDisplayPageAdapter(getSupportFragmentManager(), routeInventory);
+//        mViewPager = (ViewPager) findViewById(R.id.route_pager);
+//        mViewPager.setAdapter(mRouteDisplayPageAdapter);
+
+        RouteDisplayFragment rpf = new RouteDisplayFragment();
+        Route r = routeInventory.get(0);
+        Bundle args = new Bundle();
+        args.putSerializable(RouteDisplayFragment.ROUTEKEY, r);
+        rpf.setArguments(args);
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.add(R.id.route_pager, rpf);
+        transaction.commit();
+
 
         final ActionBar actionBar = getActionBar();
 
@@ -97,33 +108,44 @@ public class JamCamViewerMainActivity extends FragmentActivity {
             actionBar.addTab(routeTab);
         }
 
-        mViewPager.setOnPageChangeListener(
-                new ViewPager.SimpleOnPageChangeListener() {
-                    @Override
-                    public void onPageSelected(int position) {
-                        // When swiping between pages, select the
-                        // corresponding tab.
-                        getActionBar().setSelectedNavigationItem(position);
-                    }
-                });
+//        mViewPager.setOnPageChangeListener(
+//                new ViewPager.SimpleOnPageChangeListener() {
+//                    @Override
+//                    public void onPageSelected(int position) {
+//                        // When swiping between pages, select the
+//                        // corresponding tab.
+//                        getActionBar().setSelectedNavigationItem(position);
+//                    }
+//                });
 
     }
 
     // Create a tab listener that is called when the user changes tabs.
     private ActionBar.TabListener getTabListener() {
         ActionBar.TabListener tabListener = new ActionBar.TabListener() {
-            public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
+            public void onTabSelected(ActionBar.Tab tab, android.app.FragmentTransaction ft) {
                 // show the given tab
                 // When the tab is selected, switch to the
                 // corresponding page in the ViewPager.
-                mViewPager.setCurrentItem(tab.getPosition());
+//                mViewPager.setCurrentItem(tab.getPosition());
+
+
+                RouteDisplayFragment rpf = new RouteDisplayFragment();
+                Route r = routeInventory.get(tab.getPosition());
+                Bundle args = new Bundle();
+                args.putSerializable(RouteDisplayFragment.ROUTEKEY, r);
+                rpf.setArguments(args);
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.route_pager, rpf);
+                transaction.addToBackStack(null);
+                transaction.commit();
             }
 
-            public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction ft) {
+            public void onTabUnselected(ActionBar.Tab tab, android.app.FragmentTransaction ft) {
                 // hide the given tab
             }
 
-            public void onTabReselected(ActionBar.Tab tab, FragmentTransaction ft) {
+            public void onTabReselected(ActionBar.Tab tab, android.app.FragmentTransaction ft) {
                 // probably ignore this event
             }
         };
