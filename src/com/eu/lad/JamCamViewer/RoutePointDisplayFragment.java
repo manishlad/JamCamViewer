@@ -68,9 +68,6 @@ public class RoutePointDisplayFragment extends Fragment implements View.OnClickL
     }
 
     private void updateWebView() {
-        //Intent intent = getActivity().getIntent();
-        //String camURL = intent.getStringExtra(JamCamViewerMainActivity.CAM_URL);
-
         webView.loadUrl(mRoutePointCameraUrl);
         webView.refreshDrawableState();
     }

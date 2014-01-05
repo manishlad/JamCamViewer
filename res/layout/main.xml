@@ -5,15 +5,6 @@
               android:layout_height="match_parent"
         >
 
-    <!--android.support.v4.view.ViewPager android:id="@+id/route_pager"
-                                       android:layout_width="match_parent"
-                                       android:layout_height="match_parent" /-->
-
-    <!--FrameLayout android:id="@+id/main_fragment_container"
-                 android:orientation="vertical"
-                 android:layout_width="match_parent"
-                 android:layout_height="match_parent"/-->
-
     <FrameLayout android:id="@+id/route_pager"
              android:orientation="vertical"
              android:layout_width="match_parent"

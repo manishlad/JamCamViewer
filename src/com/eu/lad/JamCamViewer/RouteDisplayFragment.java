@@ -28,7 +28,7 @@ import android.view.ViewGroup;
 
 public class RouteDisplayFragment extends Fragment {
 
-    public static final String ROUTEKEY = "ROUTE";
+    public static final String ROUTE_ID = "ROUTE";
 
     protected RoutePointDisplayPageAdapter mRoutePointDisplayPageAdapter;
     protected ViewPager mViewPager;
@@ -42,7 +42,7 @@ public class RouteDisplayFragment extends Fragment {
         View routeView = inflater.inflate(R.layout.route_display, container, false);
 
         Bundle args = getArguments();
-        mRoute = (Route) args.getSerializable(ROUTEKEY);
+        mRoute = (Route) args.getSerializable(ROUTE_ID);
 
         mRoutePointDisplayPageAdapter = new RoutePointDisplayPageAdapter(getChildFragmentManager(), mRoute.getRoutePoints());
         mViewPager = (ViewPager) routeView.findViewById(R.id.route_point_pager);
