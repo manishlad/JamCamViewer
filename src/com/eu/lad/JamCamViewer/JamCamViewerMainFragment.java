@@ -61,7 +61,7 @@ public class JamCamViewerMainFragment extends Fragment implements View.OnClickLi
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        inventory = ((JamCamViewerMainActivity) getActivity()).getInventory();
+//        inventory = ((JamCamViewerMainActivity) getActivity()).getInventory();
     }
 
     @Override

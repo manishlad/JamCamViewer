@@ -19,18 +19,26 @@
 
 package com.eu.lad.JamCamViewer;
 
-import android.app.Activity;
+import android.app.ActionBar;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.view.ViewPager;
 
-public class JamCamViewerMainActivity extends Activity
-    implements JamCamViewerMainFragment.OnCameraSelectedListener {
+import java.util.LinkedList;
+
+public class JamCamViewerMainActivity extends FragmentActivity {
+//    implements JamCamViewerMainFragment.OnCameraSelectedListener {
 
     public final static String CAM_URL = "com.eu.lad.JamCamViewer.CAM_URL";
     public final static int ADD_NEW_CAMERA_REQUEST = 1;
 
-    private JamCamInventory inventory;
+    protected RouteDisplayPageAdapter mRouteDisplayPageAdapter;
+    protected ViewPager mViewPager;
 
+//    private JamCamInventory inventory;
+
+    private LinkedList<Route> routeInventory;
 
     /**
      * Called when the activity is first created.
@@ -40,50 +48,140 @@ public class JamCamViewerMainActivity extends Activity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
-        // Initialise the camera inventory
-        inventory = new JamCamInventory(this);
+//        // Initialise the camera inventory
+//        inventory = new JamCamInventory(this);
+//
+//        // Check that the activity is using the layout version with
+//        // the main_fragment_container FrameLayout
+//        if (findViewById(R.id.main_fragment_container) != null) {
+//
+//            // However, if we're being restored from a previous state,
+//            // then we don't need to do anything and should return or else
+//            // we could end up with overlapping fragments.
+//            if (savedInstanceState != null) {
+//                return;
+//            }
+//
+//            // Create a new Fragment to be placed in the activity layout
+//            JamCamViewerMainFragment firstFragment = new JamCamViewerMainFragment();
+//
+//            // In case this activity was started with special instructions from an
+//            // Intent, pass the Intent's extras to the fragment as arguments
+//            firstFragment.setArguments(getIntent().getExtras());
+//
+//            // Add the fragment to the 'fragment_container' FrameLayout
+//            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+//            transaction.add(R.id.main_fragment_container, firstFragment);
+//            transaction.commit();
+//        }
 
-        // Check that the activity is using the layout version with
-        // the main_fragment_container FrameLayout
-        if (findViewById(R.id.main_fragment_container) != null) {
 
-            // However, if we're being restored from a previous state,
-            // then we don't need to do anything and should return or else
-            // we could end up with overlapping fragments.
-            if (savedInstanceState != null) {
-                return;
+        // Initialise the route inventory
+        routeInventory = new LinkedList<Route>();
+        seedBaseData();
+
+        mRouteDisplayPageAdapter = new RouteDisplayPageAdapter(getSupportFragmentManager(), routeInventory);
+        mViewPager = (ViewPager) findViewById(R.id.route_pager);
+        mViewPager.setAdapter(mRouteDisplayPageAdapter);
+
+        final ActionBar actionBar = getActionBar();
+
+        // Specify that tabs should be displayed in the action bar.
+        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+
+        // Add a tab for each route in the routeInventory
+        for (Route route : routeInventory) {
+            ActionBar.Tab routeTab = actionBar.newTab();
+            routeTab.setText(route.getRouteLabel());
+            routeTab.setTabListener(this.getTabListener());
+            actionBar.addTab(routeTab);
+        }
+
+        mViewPager.setOnPageChangeListener(
+                new ViewPager.SimpleOnPageChangeListener() {
+                    @Override
+                    public void onPageSelected(int position) {
+                        // When swiping between pages, select the
+                        // corresponding tab.
+                        getActionBar().setSelectedNavigationItem(position);
+                    }
+                });
+
+    }
+
+    // Create a tab listener that is called when the user changes tabs.
+    private ActionBar.TabListener getTabListener() {
+        ActionBar.TabListener tabListener = new ActionBar.TabListener() {
+            public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
+                // show the given tab
+                // When the tab is selected, switch to the
+                // corresponding page in the ViewPager.
+                mViewPager.setCurrentItem(tab.getPosition());
             }
 
-            // Create a new Fragment to be placed in the activity layout
-            JamCamViewerMainFragment firstFragment = new JamCamViewerMainFragment();
+            public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction ft) {
+                // hide the given tab
+            }
 
-            // In case this activity was started with special instructions from an
-            // Intent, pass the Intent's extras to the fragment as arguments
-            firstFragment.setArguments(getIntent().getExtras());
+            public void onTabReselected(ActionBar.Tab tab, FragmentTransaction ft) {
+                // probably ignore this event
+            }
+        };
+        
+        return tabListener;
+    }
+    
+    
+//    public void cameraSelected(int camera) {
+//        JamCamView jamCamViewFragment = new JamCamView();
+//        getIntent().putExtra(CAM_URL, inventory.getCameraURL(camera));
+//        jamCamViewFragment.setArguments(getIntent().getExtras());
+//
+//        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+//
+//        transaction.replace(R.id.main_fragment_container, jamCamViewFragment);
+//        transaction.addToBackStack(null);
+//
+//        transaction.commit();
+//    }
 
-            // Add the fragment to the 'fragment_container' FrameLayout
-            FragmentTransaction transaction = getFragmentManager().beginTransaction();
-            transaction.add(R.id.main_fragment_container, firstFragment);
-            transaction.commit();
+//    public JamCamInventory getInventory() {
+//        return inventory;
+//    }
+
+
+    private void seedBaseData() {
+        if (routeInventory.isEmpty()) {
+            Route route = new Route("Sample Route 1");
+
+            route.addRoutePoint(58299, "M40 J1");
+            route.addRoutePoint(58316, "M40 J1A");
+            route.addRoutePoint(58350, "M40 J1A-J2");
+            route.addRoutePoint(58368, "M40 J1A-J2 curve");
+
+            routeInventory.add(route);
+
+
+            route = new Route("Sample Route 2");
+
+            route.addRoutePoint(55020, "M25 J16 under M40");
+            route.addRoutePoint(54975, "M25 J16-J15");
+            route.addRoutePoint(54965, "M25 J16-J15");
+
+            routeInventory.add(route);
+
+
+            route = new Route("Sample Route 3");
+
+            route.addRoutePoint(52280, "M4 J4B");
+            route.addRoutePoint(52288, "M4 J4B");
+            route.addRoutePoint(52296, "M4 J4B-J5");
+            route.addRoutePoint(52306, "M4 J5");
+            route.addRoutePoint(52350, "M4 J5-J6");
+
+            routeInventory.add(route);
+
         }
 
     }
-
-    public void cameraSelected(int camera) {
-        JamCamView jamCamViewFragment = new JamCamView();
-        getIntent().putExtra(CAM_URL, inventory.getCameraURL(camera));
-        jamCamViewFragment.setArguments(getIntent().getExtras());
-
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-
-        transaction.replace(R.id.main_fragment_container, jamCamViewFragment);
-        transaction.addToBackStack(null);
-
-        transaction.commit();
-    }
-
-    public JamCamInventory getInventory() {
-        return inventory;
-    }
-
 }
