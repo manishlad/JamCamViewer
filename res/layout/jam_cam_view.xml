@@ -16,17 +16,11 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/webView"
                 android:layout_gravity="center"/>
-        <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="fill_parent"
+        <Button
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:padding="10dip">
-            <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/refresh_camera"
-                    android:id="@+id/refresh_camera_button" />
-        </LinearLayout>
+                android:text="@string/refresh_camera"
+                android:id="@+id/refresh_camera_button"
+                android:layout_marginTop="10dp"/>
     </LinearLayout>
 </ScrollView>
