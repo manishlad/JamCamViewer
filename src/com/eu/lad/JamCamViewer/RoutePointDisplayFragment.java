@@ -40,7 +40,7 @@ public class RoutePointDisplayFragment extends Fragment implements View.OnClickL
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
 
-        View routePointView = inflater.inflate(R.layout.jam_cam_view, container, false);
+        View routePointView = inflater.inflate(R.layout.route_point_camera_display, container, false);
 
         Bundle args = getArguments();
         mRoutePointCameraUrl = args.getString(ROUTEPOINTURL);
