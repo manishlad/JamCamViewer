@@ -23,6 +23,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.PagerAdapter;
 
 import java.util.LinkedList;
 
@@ -56,9 +57,9 @@ public class RoutePointDisplayPageAdapter extends FragmentStatePagerAdapter {
         return rp.getCameraDescription();
     }
 
-/*    @Override
+    @Override
     public int getItemPosition(Object object){
-        return PagerAdapter.POSITION_UNCHANGED;
+        return PagerAdapter.POSITION_NONE;
     }
-*/
+
 }
