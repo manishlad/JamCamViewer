@@ -28,8 +28,6 @@ import java.util.LinkedList;
 
 public class JamCamViewerMainActivity extends FragmentActivity {
 
-    public final static String CAM_URL = "com.eu.lad.JamCamViewer.CAM_URL";
-
     private LinkedList<Route> routeInventory;
 
     /**
@@ -70,6 +68,10 @@ public class JamCamViewerMainActivity extends FragmentActivity {
 
     }
 
+    public LinkedList<Route> getRouteInventory() {
+        return routeInventory;
+    }
+
     // Create a tab listener that is called when the user changes tabs.
     private ActionBar.TabListener getTabListener() {
         ActionBar.TabListener tabListener = new ActionBar.TabListener() {
@@ -78,10 +80,10 @@ public class JamCamViewerMainActivity extends FragmentActivity {
                 // that corresponds to the selected Action Bar tab
                 RouteDisplayFragment routeDisplayFragment = new RouteDisplayFragment();
 
-                // Pass the selected Route as an argument to the Fragment
-                Route route = routeInventory.get(tab.getPosition());
+                // Pass the selected tab position as an argument to the Fragment
+                // to indicate which Route should be displayed
                 Bundle args = new Bundle();
-                args.putSerializable(RouteDisplayFragment.ROUTE_ID, route);
+                args.putInt(RouteDisplayFragment.ROUTE_ID, tab.getPosition());
                 routeDisplayFragment.setArguments(args);
 
                 // Replace the fragment in the 'route_pager' FrameLayout

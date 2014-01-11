@@ -19,10 +19,9 @@
 
 package com.eu.lad.JamCamViewer;
 
-import java.io.Serializable;
 import java.util.LinkedList;
 
-public class Route implements Serializable {
+public class Route {
 
     private String routeLabel;
     private LinkedList<RoutePoint> mRoute;

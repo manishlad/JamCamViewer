@@ -42,7 +42,7 @@ public class RouteDisplayFragment extends Fragment {
         View routeView = inflater.inflate(R.layout.route_display, container, false);
 
         Bundle args = getArguments();
-        mRoute = (Route) args.getSerializable(ROUTE_ID);
+        mRoute = ((JamCamViewerMainActivity) getActivity()).getRouteInventory().get(args.getInt(ROUTE_ID));
 
         mRoutePointDisplayPageAdapter = new RoutePointDisplayPageAdapter(getChildFragmentManager(), mRoute.getRoutePoints());
         mViewPager = (ViewPager) routeView.findViewById(R.id.route_point_pager);
