@@ -45,10 +45,10 @@ public class JamCamViewerMainActivity extends FragmentActivity {
         if (findViewById(R.id.route_pager) != null) {
 
             // However, if we're being restored from a previous state,
-            // then we don't need to do anything and should return or else
-            // we could end up with overlapping fragments.
+            // then remove any saved support fragments to avoid overlapping
+            // the Action bar.
             if (savedInstanceState != null) {
-                return;
+                savedInstanceState.remove ("android:support:fragments");
             }
 
             // Initialise the route inventory
