@@ -56,4 +56,9 @@ public class RoutePointDisplayPageAdapter extends FragmentStatePagerAdapter {
         return rp.getCameraDescription();
     }
 
+/*    @Override
+    public int getItemPosition(Object object){
+        return PagerAdapter.POSITION_UNCHANGED;
+    }
+*/
 }

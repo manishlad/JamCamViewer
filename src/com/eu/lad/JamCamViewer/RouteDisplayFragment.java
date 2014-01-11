@@ -47,6 +47,7 @@ public class RouteDisplayFragment extends Fragment {
         mRoutePointDisplayPageAdapter = new RoutePointDisplayPageAdapter(getChildFragmentManager(), mRoute.getRoutePoints());
         mViewPager = (ViewPager) routeView.findViewById(R.id.route_point_pager);
         mViewPager.setAdapter(mRoutePointDisplayPageAdapter);
+        mViewPager.setOffscreenPageLimit(0);
 
         return routeView;
     }

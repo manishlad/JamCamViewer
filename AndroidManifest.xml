@@ -13,7 +13,7 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <!--activity android:name=".JamCamView"/>
-        <activity android:name=".AddCameraDialog" android:label="Add Camera" android:theme="@android:style/Theme.Holo.Dialog"/-->
+        <activity android:name=".JamCamView"/>
+        <!--activity android:name=".AddCameraDialog" android:label="Add Camera" android:theme="@android:style/Theme.Holo.Dialog"/-->
     </application>
 </manifest>

@@ -66,29 +66,6 @@ public class JamCamViewerMainActivity extends FragmentActivity {
                 routeTab.setTabListener(this.getTabListener());
                 actionBar.addTab(routeTab);
             }
-
-
-            // Create a new initial Fragment to be placed in the activity layout
-            RouteDisplayFragment routeDisplayFragment = new RouteDisplayFragment();
-
-            // In case this activity was started with special instructions from an
-            // Intent, get the Intent's extras to pass into the fragment as arguments,
-            // otherwise create a new Bundle to hold arguments
-            Bundle args = getIntent().getExtras();
-            if (args == null) {
-                args = new Bundle();
-            }
-
-            // Add the first route into the arguments and pass them to the fragment
-            Route route = routeInventory.get(0);
-            args.putSerializable(RouteDisplayFragment.ROUTE_ID, route);
-            routeDisplayFragment.setArguments(args);
-
-            // Add the fragment to the 'route_pager' FrameLayout
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.add(R.id.route_pager, routeDisplayFragment);
-            transaction.commit();
-
         }
 
     }
@@ -110,7 +87,6 @@ public class JamCamViewerMainActivity extends FragmentActivity {
                 // Replace the fragment in the 'route_pager' FrameLayout
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
                 transaction.replace(R.id.route_pager, routeDisplayFragment);
-                transaction.addToBackStack(null);
                 transaction.commit();
             }
 
