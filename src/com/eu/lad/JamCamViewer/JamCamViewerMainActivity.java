@@ -20,6 +20,7 @@
 package com.eu.lad.JamCamViewer;
 
 import android.app.ActionBar;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
@@ -46,7 +47,7 @@ public class JamCamViewerMainActivity extends FragmentActivity {
             // then remove any saved support fragments to avoid overlapping
             // the Action bar.
             if (savedInstanceState != null) {
-                savedInstanceState.remove ("android:support:fragments");
+                return;
             }
 
             // Initialise the route inventory
@@ -66,6 +67,11 @@ public class JamCamViewerMainActivity extends FragmentActivity {
             }
         }
 
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
     }
 
     public LinkedList<Route> getRouteInventory() {
