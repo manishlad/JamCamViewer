@@ -8,7 +8,8 @@
 
     <android.support.v4.view.ViewPager android:id="@+id/route_point_pager"
                                        android:layout_width="match_parent"
-                                       android:layout_height="match_parent" >
+                                       android:layout_height="match_parent"
+                                       android:layout_marginTop="2dp" >
 
         <android.support.v4.view.PagerTabStrip
                 android:id="@+id/route_point_pager_tab_strip"
