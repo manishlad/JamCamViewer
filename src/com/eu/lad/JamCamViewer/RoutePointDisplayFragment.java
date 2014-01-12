@@ -48,6 +48,7 @@ public class RoutePointDisplayFragment extends Fragment implements View.OnClickL
         webView = (WebView) routePointView.findViewById(R.id.webView);
         // webView.setWebViewClient(new WebViewClient());
         webView.getSettings().setJavaScriptEnabled(true);
+        webView.getSettings().setLoadWithOverviewMode(true);
 
         refreshCameraButton = (Button) routePointView.findViewById(R.id.refresh_camera_button);
         refreshCameraButton.setOnClickListener(this);
